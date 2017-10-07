@@ -20,7 +20,7 @@ if [ "${VOL_SRC}" != "${VOL_SRC_CHECK}" ]; then
    exit 1;
 fi
 
-echo -n 'Volume "'${VOL_SRC}'" will be exported as "'${VOL_DST}' to the remote server" [y/N] '
+echo -n 'Volume "'${VOL_SRC}'" will be copied as "'${VOL_DST}' to the remote server" [y/N] '
 
 read ANSWER
 
