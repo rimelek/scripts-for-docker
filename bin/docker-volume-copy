@@ -24,7 +24,7 @@ if [ "${ANSWER}" != "y" ]; then
 fi
 
 if [ "${VOL_DST}" == "${VOL_DST_CHECK}" ]; then
-  echo -n 'Destination volume "'${VOL_DST}'" already esists. Data on the volume will be completely lost [y/N] '
+  echo -n 'Destination volume "'${VOL_DST}'" already exists. Data on the volume will be completely lost [y/N] '
   read ANSWER
   if [ "${ANSWER}" != "y" ]; then
     echo 'Canceled';
