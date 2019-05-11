@@ -35,4 +35,15 @@ docker-volume-files my-volume path/to/subfolder
 * [docker-volume-import](bin/docker-volume-import): Import exported tar archive to a volume.<br>
 ```bash
 # format: docker-volume-import FILE VOLUME
-docker-volume-export exported-my-volume.tgz my-volume 
+docker-volume-export exported-my-volume.tgz my-volume
+```
+
+* [docker-image-list](bin/docker-image-list): List images grouped by id or name
+
+```bash
+# format: docker-image-list COMMAND
+# group by id
+docker-image-list groupById
+# group by name
+docker-image-list groupByName
+```
