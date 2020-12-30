@@ -47,3 +47,15 @@ docker-image-list groupById
 # group by name
 docker-image-list groupByName
 ```
+
+* [docker-ratelimits-list](bin/docker-ratelimits-list): List anonymous and authenticated rate limits.
+
+See [Download rate limit](https://docs.docker.com/docker-hub/download-rate-limit/)
+
+```bash
+# format: docker-ratelimits-list [USER] [PASS]
+# Ratel imits for authenticated and anonymous user
+docker-ratelimit-list $username $(read -rs pass && echo $pass) | jq '.'
+# Ratelimits only for anonymous user
+docker-ratelimit-list | jq '.'
+```
