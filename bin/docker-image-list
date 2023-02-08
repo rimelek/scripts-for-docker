@@ -25,7 +25,7 @@ function trim() {
 
 function groupById() {
   for i in $(docker image ls -q | uniq); do
-    printf "${i}:        "
+    printf "%s:        " "$i"
     docker image inspect -f '{{range $i:=.RepoTags}}{{printf "%s\n                     " $i}}{{end}}' "${i}"
   done
 }
