@@ -2,7 +2,7 @@
 
 set -eu
 
-main() {
+function main() {
   local cmd="${1}"
   case "${cmd}" in
   groupByName)
@@ -17,26 +17,26 @@ main() {
   esac
 }
 
-ltrim() {
+function ltrim() {
   cat - | sed -e 's/^[[:space:]]*//'
 }
 
-rtrim() {
+function rtrim() {
   cat - | sed -e 's/[[:space:]]*$//'
 }
 
-trim() {
+function trim() {
   cat - | ltrim | rtrim
 }
 
-groupById() {
+function groupById() {
   for i in $(docker image ls -q | uniq); do
     printf "${i}:        "
     docker image inspect -f '{{range $i:=.RepoTags}}{{printf "%s\n                     " $i}}{{end}}' "${i}"
   done
 }
 
-groupByName() {
+function groupByName() {
   local prevRegistry=""
   local prevOwner=""
   local prevImage=""

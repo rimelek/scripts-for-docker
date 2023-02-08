@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-getFullPath() {
+function getFullPath() {
   local SRC=${1}
   if [ -z "$(which readlink 2>/dev/null)" ]; then
     realpath ${SRC}
