@@ -5,47 +5,47 @@ This project contains scripts you can use with Docker and save some time.
 
 ##  Scripts
 
-* [docker-volume-copy](bin/docker-volume-copy): Copy local volume<br> 
+* [docker-volume-copy](bin/docker-volume-copy.sh): Copy local volume<br> 
 ```bash
-# format: docker-volume-copy VOLUME_SRC VOLUME_DST
-docker-volume-copy my-old-volume my-new-volume
+# format: docker-volume-copy.sh VOLUME_SRC VOLUME_DST
+./bin/docker-volume-copy.sh my-old-volume my-new-volume
 ```
-* [docker-volume-copy-remote](bin/docker-volume-copy-remote): Copy local volume to a remote server<br>
+* [docker-volume-copy-remote](bin/docker-volume-copy-remote.sh): Copy local volume to a remote server<br>
 ```bash
-# format: docker-volume-copy-remote VOLUME_SRC SSH_REMOTE_SRV SSH_REMOTE_PORT [VOLUME_DST]
-docker-volume-copy-remote my-old-volume user@host.tld 22
+# format: docker-volume-copy-remote.sh VOLUME_SRC SSH_REMOTE_SRV SSH_REMOTE_PORT [VOLUME_DST]
+./bin/docker-volume-copy-remote.sh my-old-volume user@host.tld 22
 # or
-docker-volume-copy-remote my-old-volume user@host.tld 22 my-new-volume
+./bin/docker-volume-copy-remote.sh my-old-volume user@host.tld 22 my-new-volume
 ```
 If you omit the last argument the name of the source volume wil be used.
 **NOTE**: Using SSH key is recommended 
-* [docker-volume-export](bin/docker-volume-export): Export volume to a tar archive<br>
+* [docker-volume-export](bin/docker-volume-export.sh): Export volume to a tar archive<br>
 ```bash
-# format: docker-volume-export VOLUME FILE
-docker-volume-export my-volume exported-my-volume.tgz 
+# format: docker-volume-export.sh VOLUME FILE
+./bin/docker-volume-export.sh my-volume exported-my-volume.tgz 
 ```
-* [docker-volume-files](bin/docker-volume-files): List files on a volume<br>
+* [docker-volume-files](bin/docker-volume-files.sh): List files on a volume<br>
 ```bash
-# format: docker-volume-files VOLUME [FOLDER]
-docker-volume-files my-volume
+# format: docker-volume-files.sh VOLUME [FOLDER]
+./bin/docker-volume-files.sh my-volume
 # or
-docker-volume-files my-volume path/to/subfolder
+./bin/docker-volume-files.sh my-volume path/to/subfolder
 ```
 **NOTE**: Do not start the name of the folder with "/"
-* [docker-volume-import](bin/docker-volume-import): Import exported tar archive to a volume.<br>
+* [docker-volume-import](bin/docker-volume-import.sh): Import exported tar archive to a volume.<br>
 ```bash
-# format: docker-volume-import FILE VOLUME
-docker-volume-export exported-my-volume.tgz my-volume
+# format: docker-volume-import.sh FILE VOLUME
+./bin/docker-volume-export.sh exported-my-volume.tgz my-volume
 ```
 
-* [docker-image-list](bin/docker-image-list): List images grouped by id or name
+* [docker-image-list](bin/docker-image-list.sh): List images grouped by id or name
 
 ```bash
-# format: docker-image-list COMMAND
+# format: docker-image-list.sh COMMAND
 # group by id
-docker-image-list groupById
+./bin/docker-image-list.sh groupById
 # group by name
-docker-image-list groupByName
+./bin/docker-image-list.sh groupByName
 ```
 
 * [docker-ratelimits-list](bin/docker-ratelimits-list): List anonymous and authenticated rate limits.
@@ -53,9 +53,9 @@ docker-image-list groupByName
 See [Download rate limit](https://docs.docker.com/docker-hub/download-rate-limit/)
 
 ```bash
-# format: docker-ratelimits-list [USER] [PASS]
+# format: docker-ratelimits-list.sh [USER] [PASS]
 # Ratel imits for authenticated and anonymous user
-docker-ratelimit-list $username $(read -rs pass && echo $pass) | jq '.'
+./bin/docker-ratelimit-list.sh $username $(read -rs pass && echo $pass) | jq '.'
 # Ratelimits only for anonymous user
-docker-ratelimit-list | jq '.'
+./bin/docker-ratelimit-list.sh | jq '.'
 ```
