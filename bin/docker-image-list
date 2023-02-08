@@ -17,16 +17,10 @@ function main() {
   esac
 }
 
-function ltrim() {
-  cat - | sed -e 's/^[[:space:]]*//'
-}
-
-function rtrim() {
-  cat - | sed -e 's/[[:space:]]*$//'
-}
-
 function trim() {
-  cat - | ltrim | rtrim
+  cat - \
+  | sed -e 's/^[[:space:]]*//' \
+  | sed -e 's/[[:space:]]*$//'
 }
 
 function groupById() {
