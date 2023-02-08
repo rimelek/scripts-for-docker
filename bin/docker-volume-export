@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 : ${1:?First argument is required}
 : ${2:?Second argument is required}
