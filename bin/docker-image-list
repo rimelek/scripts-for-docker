@@ -18,27 +18,15 @@ main() {
 }
 
 ltrim() {
-    local STR="${@}"
-    if [[ "$#" == 0 ]]; then
-        STR="$(cat -)"
-    fi
-    echo "${STR}" | sed -e 's/^[[:space:]]*//'
+    cat - | sed -e 's/^[[:space:]]*//'
 }
 
 rtrim() {
-    local STR="${@}"
-    if [[ "$#" == 0 ]]; then
-        STR="$(cat -)"
-    fi
-    echo "${STR}" | sed -e 's/[[:space:]]*$//'
+    cat - | sed -e 's/[[:space:]]*$//'
 }
 
 trim() {
-    local STR="${@}"
-    if [[ "$#" == 0 ]]; then
-        STR="$(cat -)"
-    fi
-    rtrim "$(ltrim "${STR}")"
+    cat - | ltrim | rtrim
 }
 
 groupById() {
