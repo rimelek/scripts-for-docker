@@ -78,13 +78,13 @@ function groupByName() {
     restOf="$(echo "${i}" | cut -d" " -f2- | trim)"
     if [[ "${registry}" != "${prevRegistry}" ]]; then
       echo
-      echo -e "\e[32m${registry}\e[0m"
+     printf "\e[32m%s\e[0m\n" "$registry"
     fi
     if [[ "${owner}" != "${prevOwner}" ]]; then
-      echo -e "  \e[33m${owner}\e[0m"
+      printf "  \e[33m%s\e[0m\n" "$owner"
     fi
     if [[ "${image}" != "${prevImage}" ]]; then
-      echo -e "    \e[34m${image}\e[0m"
+      printf "    \e[34m%s\e[0m\n" "$image"
     fi
     echo "      ${restOf}"
 
