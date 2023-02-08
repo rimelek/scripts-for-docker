@@ -12,7 +12,7 @@ function get_limits() {
   local headers
 
   if [[ "$#" -eq 1 ]]; then
-    >&2 echo "Error: missing password"
+    echo >&2 "Error: missing password"
     return 1
   fi
 
@@ -28,9 +28,9 @@ function get_limits() {
   ratelimits=$(echo "$headers" | grep "^RateLimit-")
 
   echo -n "{"
-  echo -n "$ratelimits" \
-    | awk '{ printf "%s", tolower(gensub(/^RateLimit-([^:]+): ([0-9]+);w=([0-9]+).*$/, "\"\\1\":{\"value\": \\2, \"interval\": \\3},", "g", $0)) }' \
-    | head -c-1
+  echo -n "$ratelimits" |
+    awk '{ printf "%s", tolower(gensub(/^RateLimit-([^:]+): ([0-9]+);w=([0-9]+).*$/, "\"\\1\":{\"value\": \\2, \"interval\": \\3},", "g", $0)) }' |
+    head -c-1
   echo -n "}"
 }
 
@@ -38,7 +38,7 @@ user=""
 pass=""
 
 if [[ "$#" -eq 1 ]]; then
-  >&2 echo "Error: missing password"
+  echo >&2 "Error: missing password"
   exit 1
 fi
 

@@ -1,11 +1,11 @@
 #!/bin/bash
 
-getFullPath () {
+getFullPath() {
   local SRC=${1}
-  if [ -z "`which readlink 2>/dev/null`" ]; then
-    realpath ${SRC};
+  if [ -z "$(which readlink 2>/dev/null)" ]; then
+    realpath ${SRC}
   else
-    readlink -f ${SRC};
+    readlink -f ${SRC}
   fi
 }
 
@@ -19,8 +19,8 @@ VOL_DST_CHECK=$(docker volume ls -q -f name="^${VOL_DST}$")
 VOL_SRC_CHECK=$(ls ${VOL_SRC} 2>/dev/null)
 
 if [ "${VOL_SRC}" != "${VOL_SRC_CHECK}" ]; then
-   >&2 echo 'File not found: "'${VOL_SRC}'"';
-   exit 1;
+  echo >&2 'File not found: "'${VOL_SRC}'"'
+  exit 1
 fi
 
 echo -n '"'${VOL_SRC}'" will be imported to volume "'${VOL_DST}'" [y/N] '
@@ -29,15 +29,15 @@ read ANSWER
 
 if [ "${ANSWER}" != "y" ]; then
   echo 'Canceled'
-  exit 0;
+  exit 0
 fi
 
 if [ "${VOL_DST}" == "${VOL_DST_CHECK}" ]; then
   echo -n 'Destination volume "'${VOL_DST}'" already exists. It will be overwritten. [y/N] '
   read ANSWER
   if [ "${ANSWER}" != "y" ]; then
-    echo 'Canceled';
-    exit 0;
+    echo 'Canceled'
+    exit 0
   fi
   docker volume rm ${VOL_DST}
 fi

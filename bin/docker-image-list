@@ -3,102 +3,102 @@
 set -eu
 
 main() {
-    local cmd="${1}"
-    case "${cmd}" in
-        groupByName)
-            groupByName
-            ;;
-        groupById)
-            groupById
-            ;;
-        *)
-            echo "Unknown commands. Commands: groupByName, groupById"
-            ;;
-    esac
+  local cmd="${1}"
+  case "${cmd}" in
+  groupByName)
+    groupByName
+    ;;
+  groupById)
+    groupById
+    ;;
+  *)
+    echo "Unknown commands. Commands: groupByName, groupById"
+    ;;
+  esac
 }
 
 ltrim() {
-    cat - | sed -e 's/^[[:space:]]*//'
+  cat - | sed -e 's/^[[:space:]]*//'
 }
 
 rtrim() {
-    cat - | sed -e 's/[[:space:]]*$//'
+  cat - | sed -e 's/[[:space:]]*$//'
 }
 
 trim() {
-    cat - | ltrim | rtrim
+  cat - | ltrim | rtrim
 }
 
 groupById() {
-    for i in $(docker image ls -q | uniq); do
-        printf "${i}:        ";
-        docker image inspect -f '{{range $i:=.RepoTags}}{{printf "%s\n                     " $i}}{{end}}' "${i}";
-    done;
+  for i in $(docker image ls -q | uniq); do
+    printf "${i}:        "
+    docker image inspect -f '{{range $i:=.RepoTags}}{{printf "%s\n                     " $i}}{{end}}' "${i}"
+  done
 }
 
 groupByName() {
-    local prevRegistry=""
-    local prevOwner=""
-    local prevImage=""
-    local repository=""
-    local restOf=""
-    local registry=""
-    local owner=""
-    local image=""
-    local unsortedList=""
+  local prevRegistry=""
+  local prevOwner=""
+  local prevImage=""
+  local repository=""
+  local restOf=""
+  local registry=""
+  local owner=""
+  local image=""
+  local unsortedList=""
 
-    IFS_ORIG="${IFS}"
-    IFS=$'\n'
+  IFS_ORIG="${IFS}"
+  IFS=$'\n'
 
-    for i in $(docker image ls | tail -n+2); do
-        repository="//$(echo "${i}" | cut -d" " -f1 | trim)"
-        restOf="$(echo "${i}" | cut -d" " -f2- | trim)"
-        registry="$(echo "${repository}" | awk -F/ '{ print $(NF-2) }')"
-        owner="$(echo "${repository}"    | awk -F/ '{ print $(NF-1) }')"
-        image="$(echo "${repository}"    | awk -F/ '{ print $(NF-0) }')"
-        if [[ -z "${registry}" ]]; then
-            if [[ "${owner}" == "docker.io" ]]; then
-                registry="${owner}"
-                owner="library"
-            fi
-        fi
+  for i in $(docker image ls | tail -n+2); do
+    repository="//$(echo "${i}" | cut -d" " -f1 | trim)"
+    restOf="$(echo "${i}" | cut -d" " -f2- | trim)"
+    registry="$(echo "${repository}" | awk -F/ '{ print $(NF-2) }')"
+    owner="$(echo "${repository}" | awk -F/ '{ print $(NF-1) }')"
+    image="$(echo "${repository}" | awk -F/ '{ print $(NF-0) }')"
+    if [[ -z "${registry}" ]]; then
+      if [[ "${owner}" == "docker.io" ]]; then
+        registry="${owner}"
+        owner="library"
+      fi
+    fi
 
-        if [[ -z "${registry}" ]]; then
-            registry="docker.io"
-        fi
+    if [[ -z "${registry}" ]]; then
+      registry="docker.io"
+    fi
 
-        if [[ -z "${owner}" ]]; then
-            owner="library"
-        fi
-        repository="${registry}/${owner}/${image}"
+    if [[ -z "${owner}" ]]; then
+      owner="library"
+    fi
+    repository="${registry}/${owner}/${image}"
 
-        unsortedList="$(printf "%s\n%s    %s" "${unsortedList}" "${repository}" "${restOf}")"
-    done
+    unsortedList="$(printf "%s\n%s    %s" "${unsortedList}" "${repository}" "${restOf}")"
+  done
 
-    for i in $(echo "${unsortedList}" | tail -n+2 | sort -k 1n); do
-        repository="$(echo "${i}" | cut -d" " -f1 | trim)"
-        registry="$(echo "${repository}" | cut -d/ -f1)"
-        owner="$(echo "${repository}"    | cut -d/ -f2)"
-        image="$(echo "${repository}"    | cut -d/ -f3)"
+  for i in $(echo "${unsortedList}" | tail -n+2 | sort -k 1n); do
+    repository="$(echo "${i}" | cut -d" " -f1 | trim)"
+    registry="$(echo "${repository}" | cut -d/ -f1)"
+    owner="$(echo "${repository}" | cut -d/ -f2)"
+    image="$(echo "${repository}" | cut -d/ -f3)"
 
-        restOf="$(echo "${i}" | cut -d" " -f2- | trim)"
-        if [[ "${registry}" != "${prevRegistry}" ]]; then
-            echo
-            echo -e "\e[32m${registry}\e[0m"
-        fi
-        if [[ "${owner}" != "${prevOwner}" ]]; then
-            echo -e "  \e[33m${owner}\e[0m"
-        fi
-        if [[ "${image}" != "${prevImage}" ]]; then
-            echo -e "    \e[34m${image}\e[0m"
-        fi
-        echo "      ${restOf}"
+    restOf="$(echo "${i}" | cut -d" " -f2- | trim)"
+    if [[ "${registry}" != "${prevRegistry}" ]]; then
+      echo
+      echo -e "\e[32m${registry}\e[0m"
+    fi
+    if [[ "${owner}" != "${prevOwner}" ]]; then
+      echo -e "  \e[33m${owner}\e[0m"
+    fi
+    if [[ "${image}" != "${prevImage}" ]]; then
+      echo -e "    \e[34m${image}\e[0m"
+    fi
+    echo "      ${restOf}"
 
-        prevRegistry="${registry}"
-        prevOwner="${owner}"
-        prevImage="${image}"
-    done
-    IFS="${IFS_ORIG}"
+    prevRegistry="${registry}"
+    prevOwner="${owner}"
+    prevImage="${image}"
+  done
+  IFS="${IFS_ORIG}"
 }
 
 main "$@"
