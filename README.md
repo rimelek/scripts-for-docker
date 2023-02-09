@@ -47,15 +47,3 @@ If you omit the last argument the name of the source volume wil be used.
 # group by name
 ./bin/docker-image-list.sh groupByName
 ```
-
-* [docker-ratelimits-list](bin/docker-ratelimits-list): List anonymous and authenticated rate limits.
-
-See [Download rate limit](https://docs.docker.com/docker-hub/download-rate-limit/)
-
-```bash
-# format: docker-ratelimits-list.sh [USER] [PASS]
-# Ratel imits for authenticated and anonymous user
-./bin/docker-ratelimit-list.sh $username $(read -rs pass && echo $pass) | jq '.'
-# Ratelimits only for anonymous user
-./bin/docker-ratelimit-list.sh | jq '.'
-```
